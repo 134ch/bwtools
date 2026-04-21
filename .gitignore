@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+wheels/
+.pytest_cache/
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+# Virtual envs
+.venv/
+venv/
+env/
+ENV/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Local bwkit state (never commit user DB / secrets)
+.bwkit/
+.tmp-home/
+bwkit.db
+bwkit.db-journal
+.env
+*.env.local
+
+# Claude Code per-project state
+.claude/
+
+# Plans directory
+plans/

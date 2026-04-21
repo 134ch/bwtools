@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bwkit"
+version = "0.1.0"
+description = "Local, curated tool gateway for AI agents. Attach one registry to many harnesses."
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "bwghostwriting-os" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "pydantic>=2.7",
+    "python-dotenv>=1.0",
+    "pyyaml>=6.0",
+    "typer>=0.12",
+    "mcp>=1.0",
+]
+
+[project.optional-dependencies]
+# Phase 1: minimal markitdown extras (core local formats only).
+# YouTube / audio transcription / Azure Doc Intelligence land in Phase 3.
+markitdown = ["markitdown[docx,pptx,xlsx,pdf]>=0.0.1"]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+
+[project.scripts]
+bwkit = "bwkit.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bwkit"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/bwkit/catalog.yaml" = "bwkit/catalog.yaml"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    "error::UserWarning:bwkit",
+]

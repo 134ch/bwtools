@@ -1,0 +1,22 @@
+# bwkit curated tool catalog (package-owned, read-only).
+#
+# Curation criteria:
+#   1. Useful for AI agents / dev workflows.
+#   2. Upstream is actively maintained.
+#   3. Runs locally (the user's machine is the compute).
+#   4. BYOK when any credentials are needed (declare in env_vars).
+#
+# Removing a tool = delete its row here + its adapter file.
+# Stale user overrides in ~/.bwkit/config.toml are warned, not errored.
+
+version: 1
+
+tools:
+  - name: markitdown
+    module: bwkit.tools.markitdown
+    summary: Convert local files or HTTP(S) URLs to Markdown (PDF, DOCX, PPTX, XLSX, HTML, text).
+    upstream: https://github.com/microsoft/markitdown
+    maintained: true
+    default_enabled: true
+    extras: [markitdown]
+    env_vars: []
