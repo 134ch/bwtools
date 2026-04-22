@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+*.egg
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ty_cache/
+
+# uv
+.uv-cache/
+
+# Node / Bun
+node_modules/
+.bun/
+bun.lockb
+# NOTE: codex-router/upstream/ ships a bun.lockb — we want that one tracked.
+!codex-router/upstream/frontend/bun.lockb
+
+# codex-lb runtime data (per-user; never commit)
+.codex-lb/
+codex-lb-data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Env files (BYOK — never commit)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local agent / tooling scratch
+.claude/
+.codex/
+scratch/

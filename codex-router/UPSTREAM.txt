@@ -1,0 +1,21 @@
+source:   https://github.com/Soju06/codex-lb
+package:  codex-lb
+version:  1.14.1
+commit:   637fa85e6aadc4ef363e379d5a3acb2a5bbbf900
+branch:   main
+license:  MIT (Copyright (c) 2025 Soju06)
+vendored: 2026-04-23
+
+The full upstream tree is copied verbatim into ./upstream/ with its .git/
+directory removed. Do not modify files under ./upstream/ directly —
+keep all bwtools-specific additions under ./sidecar/ so the upstream
+diff stays empty and a future resync is mechanical.
+
+(Named UPSTREAM.txt rather than UPSTREAM because Windows' case-insensitive
+filesystem collides with the upstream/ directory at the same level.)
+
+To refresh:
+  1. git clone --depth 1 https://github.com/Soju06/codex-lb.git /tmp/codex-lb
+  2. cd /tmp/codex-lb && rm -rf .git && record new HEAD sha
+  3. rm -rf ./upstream && cp -r /tmp/codex-lb ./upstream
+  4. update the commit/version fields above

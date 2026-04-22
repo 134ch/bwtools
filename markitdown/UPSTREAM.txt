@@ -1,0 +1,25 @@
+source:   https://github.com/microsoft/markitdown
+package:  markitdown (monorepo — see packages/)
+version:  0.1.6b2 (from packages/markitdown/src/markitdown/__about__.py)
+commit:   a51f725d7ff4cdfe3bb6ad2ce2c04d98bf5f1f00
+branch:   main
+license:  MIT (Copyright (c) Microsoft Corporation)
+vendored: 2026-04-23
+
+Note: main is currently a beta (0.1.6b2). Last stable release at vendor
+time was 0.1.5 (2026-02-20). We vendored main to stay current; if
+stability is preferred, re-vendor from the v0.1.5 tag.
+
+The full upstream tree is copied verbatim into ./upstream/ with its .git/
+directory removed. Do not modify files under ./upstream/ — vendor is
+unmodified today. Any bwtools-specific wrappers or configs should live
+next to ./upstream/ (not inside it).
+
+(Named UPSTREAM.txt rather than UPSTREAM because Windows' case-insensitive
+filesystem collides with the upstream/ directory at the same level.)
+
+To refresh:
+  1. git clone --depth 1 https://github.com/microsoft/markitdown.git /tmp/markitdown
+  2. cd /tmp/markitdown && rm -rf .git && record new HEAD sha
+  3. rm -rf ./upstream && cp -r /tmp/markitdown ./upstream
+  4. update the commit/version fields above
