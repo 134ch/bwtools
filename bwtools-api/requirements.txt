@@ -1,0 +1,9 @@
+# Install the bwtools API/CLI package from this folder.
+#
+# Run from bwtools-api/:
+#   python -m pip install -r requirements.txt
+#
+# Runtime code currently uses only the Python standard library. Editable
+# install keeps the CLI connected to this checkout so it can find sibling tool
+# folders.
+-e .

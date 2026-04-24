@@ -8,9 +8,10 @@ to hard-code every upstream repository's layout, install notes, ports, or
 quirks. Each tool folder records the upstream source and exposes the
 bwtools-specific usage contract around it.
 
-Today this repo is still mostly a vendored-tool registry. Over time, wrappers,
-launchers, configs, and small adapters can be added beside each upstream tree
-to make the tools easier to call consistently.
+Today this repo has a first thin front door in `bwtools-api/`: a local CLI and
+HTTP API that exposes tool inventory, codex-router controls, and markitdown
+conversion. New tools should plug into that surface instead of teaching every
+caller about their upstream-specific commands.
 
 ## Installing
 
@@ -21,40 +22,60 @@ python -m pip install -r requirements.txt
 ```
 
 That installs the current Python-backed tool runtimes from vendored local
-source paths. If you only need one tool, use that tool's own
+source paths and installs the first-party `bwtools` CLI. If you only need one
+tool, use that tool's own
 `requirements.txt` instead:
 
 ```powershell
-cd codex-router
+cd bwtools-api
+python -m pip install -r requirements.txt
+
+cd ../codex-router
 python -m pip install -r requirements.txt
 
 cd ../markitdown
 python -m pip install -r requirements.txt
 ```
 
-`codex-router` requires Python 3.13 or newer. `markitdown` supports Python
-3.10 or newer.
+`codex-router` requires Python 3.13 or newer. `bwtools-api` and `markitdown`
+support Python 3.10 or newer.
 
-## Future API Surface
+## API Surface
 
-The likely end state is a small local `bwtools` API service that exposes a
-stable interface over these tools. Other projects and agents would call the
-`bwtools` API instead of knowing every upstream command, port, or file layout.
+`bwtools-api/` provides the current local service and CLI. Other projects and
+agents can call this surface instead of knowing every upstream command, port, or
+file layout.
 
-The first useful API should stay thin:
+Start the API:
 
-- health and tool inventory endpoints
-- launch/status helpers for long-running tools such as `codex-router`
-- document conversion endpoints backed by `markitdown`
-- transcript extraction endpoints once `yt-transcripts` is implemented
+```powershell
+bwtools server
+```
 
-When that service exists, it should live in its own top-level folder with its
-own `requirements.txt`; the current root `requirements.txt` is only the
-aggregate runtime install for existing tools.
+Default bind: `http://127.0.0.1:2480`.
+
+Current endpoints:
+
+- `GET /health`
+- `GET /tools`
+- `GET /tools/{name}`
+- `GET /tools/codex-router/status`
+- `POST /tools/codex-router/start`
+- `POST /tools/codex-router/stop`
+- `POST /tools/markitdown/convert`
+
+Useful CLI equivalents:
+
+```powershell
+bwtools tools
+bwtools codex-router status
+bwtools markitdown convert .\input.pdf --output .\output.md
+```
 
 ## Convention
 
-Every tool lives in its own top-level folder and follows the same layout:
+Vendored third-party tools live in their own top-level folder and follow this
+layout:
 
 ```text
 <tool-name>/
@@ -68,10 +89,14 @@ Any bwtools-specific additions (wrappers, sidecars, configs) live alongside
 `upstream/` but **never inside it**. This keeps the upstream diff empty and
 makes resyncing to a newer upstream release mechanical.
 
+First-party bwtools code, such as `bwtools-api/`, has `README.md`, `LICENSE`,
+`UPSTREAM.txt`, and its own install file, but no vendored `upstream/` tree.
+
 ## Current tools
 
 | Tool           | Upstream                                           | Status          | Purpose                                          |
 |----------------|----------------------------------------------------|-----------------|--------------------------------------------------|
+| bwtools-api    | first-party                                        | active          | Local CLI/HTTP front door over the repo tools |
 | codex-router   | [Soju06/codex-lb](https://github.com/Soju06/codex-lb)     | vendored        | Multi-account ChatGPT/Codex device-auth load balancer; Vertex fallback is postponed |
 | markitdown     | [microsoft/markitdown](https://github.com/microsoft/markitdown) | vendored        | Convert PDF/DOCX/PPTX/etc. to Markdown for LLM pipelines |
 | yt-transcripts | *TBD*                                              | **stub - planned** | Bulk YouTube transcript extractor: URL list in, one Markdown per video out |

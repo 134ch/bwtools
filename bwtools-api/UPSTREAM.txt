@@ -1,0 +1,5 @@
+bwtools-api is first-party bwtools code.
+
+There is no external upstream repository or vendored upstream tree for this
+folder. It exists to provide the stable local API/CLI surface over tools that
+are vendored elsewhere in this repo.

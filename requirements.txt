@@ -8,5 +8,6 @@
 # requirements.txt.
 #
 # Note: codex-router requires Python >=3.13.
+-e ./bwtools-api
 ./codex-router/upstream
 ./markitdown/upstream/packages/markitdown

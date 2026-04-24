@@ -61,6 +61,12 @@ Then:
 markitdown path/to/file.pdf > out.md
 ```
 
+Or through the repo-level `bwtools` CLI:
+
+```bash
+bwtools markitdown convert path/to/file.pdf --output out.md
+```
+
 From Python:
 
 ```python

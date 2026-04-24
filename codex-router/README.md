@@ -65,6 +65,16 @@ Status and stop helpers:
 .\bin\stop.cmd
 ```
 
+After installing the root `bwtools` CLI, the same surface is available from
+the repo root:
+
+```powershell
+bwtools codex-router status
+bwtools codex-router start
+bwtools codex-router start --public
+bwtools codex-router stop
+```
+
 Runtime data, logs, the SQLite DB, and the launcher PID file live under the
 ignored `codex-router/codex-lb-data/` directory.
 
