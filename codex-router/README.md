@@ -39,6 +39,19 @@ chat-completions API or the Codex CLI backend API:
 
 ## Running the load balancer (upstream only)
 
+### Prerequisites
+
+- **Python 3.13+** for the native codex-lb backend.
+- **uv** for the bwtools native start wrapper.
+- **Bun 1.3.7+** for the upstream frontend workspace. Upstream
+  `frontend/package.json` declares `packageManager: "bun@1.3.7"` and ships a
+  `bun.lock`, so fresh machines should install Bun before using upstream
+  frontend commands.
+- **Node.js/npm** for the current bwtools dashboard build wrapper. The wrapper
+  uses `npm.cmd exec vite build` because upstream's full `npm run build`
+  currently fails TypeScript checks while Vite still emits working dashboard
+  assets.
+
 ### bwtools wrapper scripts
 
 From `codex-router/`:

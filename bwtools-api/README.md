@@ -52,6 +52,12 @@ Convert a file through markitdown:
 bwtools markitdown convert .\document.pdf --output .\document.md
 ```
 
+Run the read-only bwagent support doctor:
+
+```powershell
+bwtools bwagent doctor
+```
+
 ## HTTP API
 
 Start the local API service:
@@ -69,6 +75,7 @@ Current endpoints:
 | GET    | `/health`                         | Service health and repo root           |
 | GET    | `/tools`                          | Tool inventory                         |
 | GET    | `/tools/{name}`                   | One registered tool                    |
+| GET    | `/tools/bwagent-support/doctor`   | Read-only bwagent support doctor       |
 | GET    | `/tools/codex-router/status`      | codex-router PID and health probe      |
 | POST   | `/tools/codex-router/start`       | Start codex-router wrapper             |
 | POST   | `/tools/codex-router/stop`        | Stop codex-router wrapper              |

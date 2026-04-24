@@ -37,8 +37,10 @@ cd ../markitdown
 python -m pip install -r requirements.txt
 ```
 
-`codex-router` requires Python 3.13 or newer. `bwtools-api` and `markitdown`
-support Python 3.10 or newer.
+`codex-router` requires Python 3.13 or newer. Its upstream frontend also
+expects Bun 1.3.7 or newer, and the current bwtools dashboard wrapper uses
+Node.js/npm for the build workaround. `bwtools-api` and `markitdown` support
+Python 3.10 or newer.
 
 ## API Surface
 
@@ -59,6 +61,7 @@ Current endpoints:
 - `GET /health`
 - `GET /tools`
 - `GET /tools/{name}`
+- `GET /tools/bwagent-support/doctor`
 - `GET /tools/codex-router/status`
 - `POST /tools/codex-router/start`
 - `POST /tools/codex-router/stop`
@@ -68,9 +71,19 @@ Useful CLI equivalents:
 
 ```powershell
 bwtools tools
+bwtools bwagent doctor
 bwtools codex-router status
 bwtools markitdown convert .\input.pdf --output .\output.md
 ```
+
+## Planned Support Tools
+
+`bwagent-support/` records bwtools capabilities that support the
+BWGhostwriting/Hermes agent workspace (`134ch/bwagent-ops`). These are bwtools
+support surfaces, not tools owned by the `bwagent-ops` repo. The first
+implemented command is `bwtools bwagent doctor`; planned follow-ups include
+knowledge ingestion, daily brief, prospect packet, friction review, Hermes skill
+sync, and content/approval ledger support.
 
 ## Convention
 
@@ -97,6 +110,7 @@ First-party bwtools code, such as `bwtools-api/`, has `README.md`, `LICENSE`,
 | Tool           | Upstream                                           | Status          | Purpose                                          |
 |----------------|----------------------------------------------------|-----------------|--------------------------------------------------|
 | bwtools-api    | first-party                                        | active          | Local CLI/HTTP front door over the repo tools |
+| bwagent-support | first-party                                     | partial         | bwtools support utilities for the bwagent-ops agent |
 | codex-router   | [Soju06/codex-lb](https://github.com/Soju06/codex-lb)     | vendored        | Multi-account ChatGPT/Codex device-auth load balancer; Vertex fallback is postponed |
 | markitdown     | [microsoft/markitdown](https://github.com/microsoft/markitdown) | vendored        | Convert PDF/DOCX/PPTX/etc. to Markdown for LLM pipelines |
 | yt-transcripts | *TBD*                                              | **stub - planned** | Bulk YouTube transcript extractor: URL list in, one Markdown per video out |

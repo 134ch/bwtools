@@ -1,0 +1,5 @@
+bwagent-support is first-party bwtools code.
+
+There is no external upstream repository or vendored upstream tree yet. These
+support capabilities are intended to serve the BWGhostwriting/Hermes agent
+workspace at github.com/134ch/bwagent-ops.

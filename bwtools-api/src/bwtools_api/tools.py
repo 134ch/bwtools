@@ -28,6 +28,7 @@ def tool_inventory(repo_root: str | Path | None = None) -> dict[str, Any]:
             "commands": [
                 "bwtools server",
                 "bwtools tools",
+                "bwtools bwagent doctor",
                 "bwtools codex-router status",
                 "bwtools markitdown convert <input> --output <output>",
             ],
@@ -35,6 +36,7 @@ def tool_inventory(repo_root: str | Path | None = None) -> dict[str, Any]:
                 "GET /health",
                 "GET /tools",
                 "GET /tools/{name}",
+                "GET /tools/bwagent-support/doctor",
                 "GET /tools/codex-router/status",
                 "POST /tools/codex-router/start",
                 "POST /tools/codex-router/stop",
@@ -56,6 +58,26 @@ def tool_inventory(repo_root: str | Path | None = None) -> dict[str, Any]:
                 "bwtools codex-router start",
                 "bwtools codex-router stop",
             ],
+        },
+        {
+            "name": "bwagent-support",
+            "status": "partial",
+            "kind": "agent-support-suite",
+            "path": str(root / "bwagent-support"),
+            "commands": [
+                "bwtools bwagent doctor",
+            ],
+            "planned_commands": [
+                "bwtools bwagent ingest",
+                "bwtools bwagent daily-brief",
+                "bwtools bwagent prospect-packet",
+                "bwtools bwagent friction",
+                "bwtools bwagent skill-sync",
+            ],
+            "http_endpoints": [
+                "GET /tools/bwagent-support/doctor",
+            ],
+            "target_agent_workspace": "134ch/bwagent-ops",
         },
         {
             "name": "markitdown",

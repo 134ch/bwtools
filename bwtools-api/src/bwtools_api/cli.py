@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from .bwagent import bwagent_doctor
 from .server import run_server
 from .tools import (
     DEFAULT_API_HOST,
@@ -72,6 +73,36 @@ def build_parser() -> argparse.ArgumentParser:
     codex_stop = codex_subparsers.add_parser("stop", help="Stop codex-router.")
     codex_stop.add_argument("--process-id", type=int)
     codex_stop.add_argument("--timeout", type=int, default=30)
+
+    bwagent_parser = subparsers.add_parser(
+        "bwagent",
+        help="Run bwagent-ops support checks.",
+    )
+    _add_repo_root(bwagent_parser)
+    bwagent_subparsers = bwagent_parser.add_subparsers(
+        dest="bwagent_command",
+        required=True,
+    )
+
+    bwagent_doctor_parser = bwagent_subparsers.add_parser(
+        "doctor",
+        help="Run read-only checks for the bwagent-ops agent workspace.",
+    )
+    bwagent_doctor_parser.add_argument(
+        "--ops-root",
+        help="bwagent-ops checkout path. Defaults to BWAGENT_OPS_ROOT or sibling checkout.",
+    )
+    bwagent_doctor_parser.add_argument(
+        "--skip-webui",
+        action="store_true",
+        help="Skip the WebUI health probe.",
+    )
+    bwagent_doctor_parser.add_argument(
+        "--webui-timeout",
+        type=float,
+        default=2.0,
+        help="Timeout in seconds for the WebUI health probe.",
+    )
 
     markitdown_parser = subparsers.add_parser(
         "markitdown",
@@ -154,6 +185,16 @@ def main(argv: list[str] | None = None) -> int:
                 )
                 _print_json(result)
                 return 0 if result.get("ok") else 1
+
+        if args.command == "bwagent" and args.bwagent_command == "doctor":
+            result = bwagent_doctor(
+                repo_root,
+                args.ops_root,
+                probe_webui=not args.skip_webui,
+                webui_timeout=args.webui_timeout,
+            )
+            _print_json(result)
+            return 0 if result.get("ok") else 1
 
         if args.command == "markitdown" and args.markitdown_command == "convert":
             result = convert_markitdown(

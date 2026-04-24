@@ -8,6 +8,7 @@ from typing import Any
 from urllib.parse import parse_qs, urlparse
 
 from . import __version__
+from .bwagent import bwagent_doctor
 from .paths import find_repo_root
 from .tools import (
     DEFAULT_API_HOST,
@@ -97,6 +98,21 @@ def make_handler(repo_root: Path) -> type[BaseHTTPRequestHandler]:
                         DEFAULT_CODEX_ROUTER_PORT,
                     )
                     self._send_json(codex_router_status(repo_root, port))
+                    return
+
+                if path == "/tools/bwagent-support/doctor":
+                    result = bwagent_doctor(
+                        repo_root,
+                        (query.get("ops_root") or [None])[0],
+                        probe_webui=not _as_bool(
+                            (query.get("skip_webui") or [None])[0],
+                            False,
+                        ),
+                        webui_timeout=float(
+                            (query.get("webui_timeout") or [2.0])[0],
+                        ),
+                    )
+                    self._send_json(result)
                     return
 
                 if path.startswith("/tools/"):
