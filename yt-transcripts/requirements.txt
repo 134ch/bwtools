@@ -1,0 +1,4 @@
+# No runtime dependencies yet.
+#
+# This tool is still a stub. Add the selected transcript backend here when
+# implementation starts.

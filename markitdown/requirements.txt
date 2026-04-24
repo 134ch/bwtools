@@ -1,0 +1,5 @@
+# Core MarkItDown library and CLI only.
+#
+# Install from the markitdown folder:
+#   python -m pip install -r requirements.txt
+-e ./upstream/packages/markitdown

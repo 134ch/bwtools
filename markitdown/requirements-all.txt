@@ -1,0 +1,5 @@
+# MarkItDown with upstream's optional format dependencies.
+#
+# Install from the markitdown folder:
+#   python -m pip install -r requirements-all.txt
+-e ./upstream/packages/markitdown[all]

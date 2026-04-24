@@ -1,6 +1,10 @@
 # codex-router sidecar (design stub)
 
-**Status:** design only. No code in this folder yet.
+**Status:** postponed design only. No code in this folder yet.
+
+The current development path is to use Codex / ChatGPT device-auth accounts
+through upstream codex-lb first. Vertex fallback should be revisited only after
+the core router workflow is proven useful locally.
 
 ## Goal
 

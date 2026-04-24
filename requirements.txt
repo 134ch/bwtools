@@ -1,0 +1,12 @@
+# Convenience install for the default Python-backed bwtools runtimes.
+#
+# Run from the repo root:
+#   python -m pip install -r requirements.txt
+#
+# This intentionally installs the current tool runtimes from vendored local
+# source paths. If you only need one tool, prefer that tool's own
+# requirements.txt.
+#
+# Note: codex-router requires Python >=3.13.
+./codex-router/upstream
+./markitdown/upstream/packages/markitdown

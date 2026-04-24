@@ -1,7 +1,10 @@
 # codex-router
 
-A vendored copy of [Soju06/codex-lb](https://github.com/Soju06/codex-lb) v1.14.1
-plus a (planned) Vertex AI fallback sidecar.
+A vendored copy of [Soju06/codex-lb](https://github.com/Soju06/codex-lb) v1.14.1.
+
+Primary path: Codex / ChatGPT device-auth accounts through upstream codex-lb.
+The earlier Vertex fallback sidecar idea is postponed so it does not slow down
+the core local router work.
 
 ## What is codex-lb?
 
@@ -21,35 +24,75 @@ chat-completions API or the Codex CLI backend API:
 
 ## What's in this folder
 
-| Path         | What                                                                 |
-|--------------|----------------------------------------------------------------------|
-| `upstream/`  | Verbatim codex-lb v1.14.1 source (commit `637fa85`). Do not edit.    |
-| `sidecar/`   | Planned Vertex AI fallback proxy. **Design stub only — no code yet.** |
-| `LICENSE`    | Upstream MIT license (required redistribution notice)                |
-| `UPSTREAM.txt` | Source provenance and refresh instructions                         |
+| Path           | What                                                                  |
+|----------------|-----------------------------------------------------------------------|
+| `upstream/`    | Verbatim codex-lb v1.14.1 source (commit `637fa85`). Do not edit.     |
+| `sidecar/`     | Postponed Vertex AI fallback proxy. Design stub only; no code yet.    |
+| `LICENSE`      | Upstream MIT license (required redistribution notice)                 |
+| `UPSTREAM.txt` | Source provenance and refresh instructions                            |
 
 ## How this differs from upstream
 
 - Upstream is vendored verbatim. No file under `upstream/` is modified.
-- All bwtools-specific divergence will live under `sidecar/`.
-- `sidecar/` is currently a design stub — see `sidecar/README.md` for the plan.
+- All bwtools-specific divergence will live beside `upstream/`.
+- `sidecar/` is currently only a postponed design stub.
 
 ## Running the load balancer (upstream only)
 
-### Option A — native Python with `uv` (Windows)
+### bwtools wrapper scripts
 
-Requires **Python 3.13+** (upstream's `pyproject.toml` pins `requires-python = ">=3.13"`).
+From `codex-router/`:
+
+```powershell
+.\bin\build-dashboard.cmd
+.\bin\start.cmd
+```
+
+The default start command binds `127.0.0.1:2455`. To make it reachable from
+another device on the same trusted network or tailnet:
+
+```powershell
+.\bin\start.cmd -Public
+```
+
+`-Public` binds `0.0.0.0:2455`. Use that only on a network you trust or with
+Tailscale ACLs/firewall rules that restrict who can reach the service.
+
+Status and stop helpers:
+
+```powershell
+.\bin\status.cmd
+.\bin\stop.cmd
+```
+
+Runtime data, logs, the SQLite DB, and the launcher PID file live under the
+ignored `codex-router/codex-lb-data/` directory.
+
+### Option A - native Python with `uv` (Windows)
+
+Requires **Python 3.13+**. Upstream's `pyproject.toml` pins
+`requires-python = ">=3.13"`.
 
 ```bash
 cd upstream
-uv sync
+uv sync --frozen
 uv run codex-lb
 ```
 
-Dashboard + API: <http://127.0.0.1:2455>
-OAuth callback port: 1455 (hard-coded upstream — do not change)
+Use `--frozen` so the vendored upstream lockfile is not rewritten during local
+setup.
 
-### Option B — Docker
+Alternative pip install from this folder:
+
+```bash
+python -m pip install -r requirements.txt
+codex-lb
+```
+
+Dashboard + API: <http://127.0.0.1:2455>
+OAuth callback port: 1455 (hard-coded upstream - do not change)
+
+### Option B - Docker
 
 ```bash
 docker run -d --name codex-lb \
@@ -59,7 +102,7 @@ docker run -d --name codex-lb \
   ghcr.io/soju06/codex-lb:latest
 ```
 
-### Option C — `docker-compose` (from vendored compose files)
+### Option C - `docker-compose` (from vendored compose files)
 
 ```bash
 cd upstream
@@ -74,11 +117,11 @@ device-code OAuth flow.
 
 ## Pointing clients at it
 
-| Client        | Endpoint                                              |
-|---------------|-------------------------------------------------------|
-| OpenAI-style  | `http://127.0.0.1:2455/v1`                            |
-| Codex CLI     | `http://127.0.0.1:2455/backend-api/codex`             |
-| Transcription | `http://127.0.0.1:2455/backend-api/transcribe`        |
+| Client        | Endpoint                                       |
+|---------------|------------------------------------------------|
+| OpenAI-style  | `http://127.0.0.1:2455/v1`                     |
+| Codex CLI     | `http://127.0.0.1:2455/backend-api/codex`      |
+| Transcription | `http://127.0.0.1:2455/backend-api/transcribe` |
 
 ## Known constraints (from upstream)
 
@@ -88,12 +131,20 @@ device-code OAuth flow.
   machine uses 1455, stop it before starting codex-lb.
 - **Python 3.13 hard requirement** for native installs. Use Docker on older
   Pythons.
-- **ChatGPT/Codex accounts only.** No upstream support for Vertex, Anthropic,
-  or any other provider. The Vertex fallback is our addition (see `sidecar/`).
+- **ChatGPT/Codex accounts only for now.** No upstream support for Vertex,
+  Anthropic, or any other provider. The Vertex fallback is postponed.
 - **No documented quota-exhaustion failover between accounts.** Upstream
   distributes load; if every pooled account hits a 429, the request fails.
+
+## Smoke Test Result
+
+On 2026-04-24, `uv sync` succeeded after installing `uv`, and a supervised
+local launch returned `200` from `http://127.0.0.1:2455/health/live`.
+
+The test used ignored local runtime files under `codex-router/codex-lb-data/`
+and stopped the server after the probe.
 
 ## License
 
 - Upstream: MIT, Copyright (c) 2025 Soju06 (see `LICENSE`)
-- Our additions (sidecar, when written): MIT
+- Our additions (sidecar, if built later): MIT
