@@ -1,0 +1,11 @@
+__pycache__/
+.pytest_cache/
+.bridge/
+.browser-use-config/
+input-codex.csv
+bridge-run.err.log
+bridge-run.out.log
+parse-check.log
+pytest-cache-files-*/
+registration.log
+registration_report.json

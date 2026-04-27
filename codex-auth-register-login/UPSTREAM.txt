@@ -1,0 +1,16 @@
+source:   local prototype snapshot
+path:     ztemp/automated-codex-auth-register-login
+archive:  ztemp/automated codex auth register login.zip
+version:  prototype
+commit:   n/a
+license:  none declared in source snapshot
+vendored: 2026-04-27
+
+The original prototype is copied verbatim into ./upstream/ and must remain
+unchanged. All maintained improvements for bwtools live beside it.
+
+To refresh from a newer local prototype:
+  1. Replace the contents of ./upstream/ with the new snapshot verbatim.
+  2. Keep bwtools-maintained files outside ./upstream/.
+  3. Update the metadata above and re-run the local tests.
+

@@ -1,0 +1,4 @@
+invite_link|email|password|proxy
+https://example.com/register?code=abc123|user1@example.com|SecurePass123|
+https://example.com/register?code=def456|user2@example.com|SecurePass456|http://user:pass@127.0.0.1:8080
+

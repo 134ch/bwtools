@@ -1,0 +1,76 @@
+{
+  "email": [
+    "input[type='email']",
+    "input[name='email']",
+    "input[id='email']",
+    "input[placeholder*='email' i]"
+  ],
+  "password": [
+    "input[type='password']",
+    "input[name='password']",
+    "input[id='password']",
+    "input[placeholder*='password' i]"
+  ],
+  "continue": [
+    "button:has-text('Continue')",
+    "button:has-text('Next')",
+    "button:has-text('Sign in')",
+    "button:has-text('Log in')",
+    "input[type='submit'][value*='Continue' i]",
+    "input[type='submit'][value*='Next' i]"
+  ],
+  "submit": [
+    "button[type='submit']",
+    "button:has-text('Register')",
+    "button:has-text('Sign Up')",
+    "button:has-text('Create Account')",
+    "button:has-text('Submit')",
+    "button:has-text('Continue')",
+    "input[type='submit']"
+  ],
+  "otp": [
+    "input[name*='otp' i]",
+    "input[name*='code' i]",
+    "input[placeholder*='otp' i]",
+    "input[placeholder*='verification' i]",
+    "text=Enter OTP",
+    "text=Verification Code"
+  ],
+  "success": [
+    "text=Welcome",
+    "text=Registration Complete",
+    "text=Success",
+    "[class*='success' i]",
+    "[class*='confirmed' i]",
+    "[data-test='registration-success']"
+  ],
+  "device_code": [
+    "input[name*='code' i]",
+    "input[id*='code' i]",
+    "input[placeholder*='code' i]"
+  ],
+  "device_submit": [
+    "button[type='submit']",
+    "button:has-text('Continue')",
+    "button:has-text('Next')",
+    "button:has-text('Submit')",
+    "input[type='submit']"
+  ],
+  "registration_url_keywords": [
+    "register",
+    "signup",
+    "sign-up",
+    "login",
+    "sign-in",
+    "auth",
+    "verify",
+    "invite"
+  ],
+  "success_url_keywords": [
+    "welcome",
+    "dashboard",
+    "success",
+    "home"
+  ]
+}
+

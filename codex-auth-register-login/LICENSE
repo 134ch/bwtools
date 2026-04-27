@@ -1,0 +1,9 @@
+Copyright (c) 2026 bwghostwriting-os contributors
+
+This tool is maintained in this repository for internal use.
+
+The original prototype snapshot preserved under `./upstream/` did not ship
+with separate license metadata. Until the repository owner states otherwise,
+treat both the preserved snapshot and the maintained code in this folder as
+proprietary to this workspace.
+
